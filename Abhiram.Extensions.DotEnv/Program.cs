@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 
 namespace Abhiram.Extensions.DotEnv;
 
@@ -13,7 +14,7 @@ public static class DotEnvironmentVariables
     /// Each line in the file should follow the <c>KEY=VALUE</c> format. Lines that do not contain exactly one '=' character are ignored.
     /// Existing environment variables with the same keys will be overwritten.
     /// </remarks>
-    private static void SetVariables(string filePath)
+    private static void SetVariables(string? filePath)
     {
         if (!File.Exists(filePath)) return;
 
@@ -35,8 +36,38 @@ public static class DotEnvironmentVariables
     /// </remarks>
     public static void Load()
     {
-        string root = Directory.GetCurrentDirectory();
-        string filePath = Path.Combine(root, ".env");
-        SetVariables(filePath);
+        string? path = FindEnvFileFromAssembly();
+        SetVariables(path);
+    }
+
+    /// <summary>
+    /// Searches for a file named '.env', beginning from the specified directory
+    /// and moving upward through parent directories until found or root is reached.
+    /// </summary>
+    /// <param name="startDirectory">Initial directory to begin search.</param>
+    /// <returns>Full path to the .env file, or null if not found.</returns>
+    private static string? FindEnvFile(string startDirectory)
+    {
+        DirectoryInfo? dir = new DirectoryInfo(startDirectory);
+        while (dir != null)
+        {
+            string? candidate = Path.Combine(dir.FullName, ".env");
+            if (File.Exists(candidate)) return candidate;
+
+            dir = dir.Parent;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Attempts to locate the .env file based on the location of the executing assembly.
+    /// </summary>
+    /// <returns>Full path to .env, or null if not found.</returns>
+    private static string? FindEnvFileFromAssembly()
+    {
+        string? assemblyLocation = Assembly.GetExecutingAssembly().Location;
+        string? assemblyDir = Path.GetDirectoryName(assemblyLocation);
+        return assemblyDir != null ? FindEnvFile(assemblyDir) : null;
     }
 }
