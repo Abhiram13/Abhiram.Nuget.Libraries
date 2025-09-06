@@ -1,15 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.GoogleCloudLogging" Version="5.0.0" />
+    </ItemGroup>
+
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>Abhiram.Abstractions.Logging</PackageId>
+        <Version>1.0.1</Version>
+        <Authors>Abhiram</Authors>
+        <Description>A lightweight logging abstraction using Serilog for Console and Google Cloud Logging. Optimized for ASP.NET Core and environment-based configuration.</Description>
+        <RepositoryUrl>https://github.com/Abhiram13/Abhiram.Nuget.Libraries</RepositoryUrl>
+        <PackageTags>logging;serilog;google-cloud;aspnetcore;console;structured-logging</PackageTags>
+        <PackageProjectUrl>https://github.com/Abhiram13/Abhiram.Nuget.Libraries/tree/main/Abhiram.Abstractions.Logging</PackageProjectUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageReleaseNotes>
+            - Added environment-aware Serilog setup
+            - Google Cloud Logging is now enabled only in production
+            - Prevented CI/test failures when GCP credentials are not available
+        </PackageReleaseNotes>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
-      <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-      <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-      <PackageReference Include="Serilog.Sinks.GoogleCloudLogging" Version="5.0.0" />
-    </ItemGroup>
 
 </Project>
