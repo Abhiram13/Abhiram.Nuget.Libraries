@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abhiram.Extensions.DotEnv", "Abhiram.Extensions.DotEnv\Abhiram.Extensions.DotEnv.csproj", "{3AD9D10D-1987-4397-BE18-2CF6B154912E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abhiram.Abstractions.Logging", "Abhiram.Abstractions.Logging\Abhiram.Abstractions.Logging.csproj", "{E9DF00E5-B852-4151-9ABA-60700226238C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{3AD9D10D-1987-4397-BE18-2CF6B154912E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AD9D10D-1987-4397-BE18-2CF6B154912E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AD9D10D-1987-4397-BE18-2CF6B154912E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9DF00E5-B852-4151-9ABA-60700226238C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9DF00E5-B852-4151-9ABA-60700226238C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9DF00E5-B852-4151-9ABA-60700226238C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9DF00E5-B852-4151-9ABA-60700226238C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
