@@ -1,0 +1,42 @@
+using System;
+
+namespace Abhiram.Secrets.Providers.Exceptions;
+
+/// <summary>
+/// The exception that is thrown when the specified project ID is not found
+/// in the configured secret management provider (e.g., Google Secret Manager, Azure Key value, AWS Secrets Manager).
+/// </summary>
+public class ProjectNotFoundException : Exception
+{
+    /// <summary>
+    /// The exception that is thrown when the specified project ID is not found
+    /// in the configured secret management provider (e.g., Google Secret Manager, Azure Key value, AWS Secrets Manager).
+    /// Initializes a new instance of the <see cref="ProjectNotFoundException"/> class.
+    /// </summary>
+    public ProjectNotFoundException() { }
+
+    /// <summary>
+    /// The exception that is thrown when the specified project ID is not found
+    /// in the configured secret management provider (e.g., Google Secret Manager, Azure Key value, AWS Secrets Manager).
+    /// Initializes a new instance of the <see cref="ProjectNotFoundException"/> class
+    /// with a specified error message.
+    /// </summary>
+    /// <param name="message">The error message.</param>
+    public ProjectNotFoundException(string message) { }
+}
+
+
+/// <summary>
+/// The exception that is thrown when a required environment variable is not found.
+/// </summary>
+public class EnvironmentVariableNotFoundException : Exception
+{
+    public EnvironmentVariableNotFoundException() { }
+
+    /// <summary>
+    /// The exception that is thrown when a required environment variable is not found. <br />
+    /// Initializes a new instance of the <see cref="EnvironmentVariableNotFoundException"/> class
+    /// with a custom message and inner exception.
+    /// </summary>
+    public EnvironmentVariableNotFoundException(string message) { }
+}
