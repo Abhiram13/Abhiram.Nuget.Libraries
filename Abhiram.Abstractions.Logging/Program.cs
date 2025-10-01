@@ -14,7 +14,7 @@ public static class ConsoleGoogleSeriLogExtensions
     /// <param name="builder">The <see cref="WebApplicationBuilder"/> to configure logging for.</param>
     /// <returns>The same <see cref="WebApplicationBuilder"/> instance for chaining.</returns>
     /// <exception cref="ArgumentException">
-    /// Thrown when the <code>GOOGLE_CLOUD_PROJECT_ID</code> environment variable is null or empty.
+    /// Thrown when the <c>GOOGLE_CLOUD_PROJECT_ID</c> environment variable is null or empty.
     /// </exception>
     /// <remarks>
     /// This method sets up Serilog with:
