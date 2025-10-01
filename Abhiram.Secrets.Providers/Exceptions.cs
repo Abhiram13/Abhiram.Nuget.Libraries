@@ -40,3 +40,22 @@ public class EnvironmentVariableNotFoundException : Exception
     /// </summary>
     public EnvironmentVariableNotFoundException(string message) { }
 }
+
+/// <summary>
+/// Exception that is thrown when the Azure Key Vault URL cannot be found 
+/// in configuration, environment variables, or other expected sources.
+/// </summary>
+public class AzureVaultUrlNotFoundException : Exception
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AzureVaultUrlNotFoundException"/> class
+    /// with a specified error message.
+    /// </summary>
+    /// <param name="message">
+    /// The message that describes the error, typically indicating 
+    /// why the Key Vault URL could not be resolved.
+    /// </param>
+    public AzureVaultUrlNotFoundException(string message) : base(message) { }
+
+    public AzureVaultUrlNotFoundException() { }
+}
