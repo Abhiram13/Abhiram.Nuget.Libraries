@@ -49,19 +49,16 @@ public static class ConsoleGoogleSeriLogExtensions
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Error)
             .MinimumLevel.Override("System", LogEventLevel.Error)
-            .Filter.ByExcluding(Matching.FromSource("BudgetTracker.Infrastructure.Security.ApiKeyHandler"))
-            .WriteTo.Console(
-                outputTemplate: outputTemplate
-            );
+            .Filter.ByExcluding(Matching.FromSource("BudgetTracker.Infrastructure.Security.ApiKeyHandler"));            
 
-        loggerConfig = SetGoogleProjectId(loggerConfig);
+        loggerConfig = SetConsoleOrGoogleProjectId(loggerConfig, outputTemplate);
 
         Log.Logger = loggerConfig.CreateLogger();
         builder.Host.UseSerilog();
         return builder;
     }
 
-    private static LoggerConfiguration SetGoogleProjectId(LoggerConfiguration configuration)
+    private static LoggerConfiguration SetConsoleOrGoogleProjectId(LoggerConfiguration configuration, string outputTemplate)
     {
         string? environment = Environment.GetEnvironmentVariable("ENV");
         bool isProduction = environment != "Development" && environment != "Test";
@@ -76,6 +73,10 @@ public static class ConsoleGoogleSeriLogExtensions
             }
 
             configuration.WriteTo.GoogleCloudLogging(projectId: googleProjectId).MinimumLevel.Information();
+        }
+        else
+        {
+            configuration.WriteTo.Console(outputTemplate: outputTemplate);
         }
 
         return configuration;
