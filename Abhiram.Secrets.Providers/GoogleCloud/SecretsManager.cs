@@ -30,7 +30,7 @@ public class GoogleSecretManagerService : ISecretManager
     }
 
     /// <summary>
-    /// Asynchronously retrieves the secret value from Google Cloud Secret Manager.
+    /// Asynchronously retrieves the secret value from Google Cloud Secret Manager based on Region or Global.
     /// </summary>
     /// <param name="secretId">
     /// The identifier or name of the secret to retrieve.
@@ -48,12 +48,28 @@ public class GoogleSecretManagerService : ISecretManager
     /// </exception>
     public async Task<string> GetSecretAsync(string secretId)
     {
+        string? location = Environment.GetEnvironmentVariable("CLOUD_RUN_REGION");
         SecretManagerServiceClient client = await _client;
-        SecretVersionName secretVersion = SecretVersionName.FromProjectSecretSecretVersion(
-            projectId: _projectId,
-            secretId: secretId,
-            secretVersionId: "latest"
-        );
+        SecretVersionName secretVersion;
+
+        if (location is not null)
+        {
+            secretVersion = SecretVersionName.FromProjectLocationSecretSecretVersion(
+                projectId: _projectId,
+                secretId: secretId,
+                secretVersionId: "latest",
+                locationId: location
+            );
+        }
+        else
+        {
+            secretVersion = SecretVersionName.FromProjectSecretSecretVersion(
+                projectId: _projectId,
+                secretId: secretId,
+                secretVersionId: "latest"
+            );
+        }
+
         AccessSecretVersionResponse response = await client.AccessSecretVersionAsync(name: secretVersion);
         string secretValue = response.Payload.Data.ToStringUtf8();
         return secretValue;
