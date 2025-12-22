@@ -56,9 +56,9 @@ public class GoogleSecretManagerService : ISecretManager
         {
             secretVersion = SecretVersionName.FromProjectLocationSecretSecretVersion(
                 projectId: _projectId,
+                locationId: location,
                 secretId: secretId,
-                secretVersionId: "latest",
-                locationId: location
+                secretVersionId: "latest"                
             );
         }
         else
