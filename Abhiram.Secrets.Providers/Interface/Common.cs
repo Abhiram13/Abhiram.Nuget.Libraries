@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Abhiram.Secrets.Providers.Exceptions;
 
@@ -7,6 +8,7 @@ namespace Abhiram.Secrets.Providers.Interface;
 /// Defines a contract for retrieving secrets from an secret management system,
 /// such as Azure Key Vault, Google Secret Manager, AWS Secrets Manager, or Local development.
 /// </summary>
+[Obsolete(message: "This Interface is deprecated.")]
 public interface ISecretManager
 {
     /// <summary>
