@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Abhiram.Secrets.Providers.Azure;
 using Abhiram.Secrets.Providers.Google;
 using Abhiram.Secrets.Providers.Interface;
 using Abhiram.Secrets.Providers.Local;
@@ -30,6 +31,7 @@ public class SecretManagerService : ISecretManager
         return environment switch
         {
             "development" or "test" => new LocalSecretManagerService(),
+            "azure" => new AzureSecretManagerService(),
             _ => new GoogleSecretManagerService()
         };
     }
