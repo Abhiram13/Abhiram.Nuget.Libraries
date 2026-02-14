@@ -12,6 +12,7 @@ namespace Abhiram.Secrets.Providers;
 /// <exception cref="ProjectNotFoundException">
 /// Thrown when the cloud Project ID environment variable is not set or is empty.
 /// </exception>
+[Obsolete(message: "This Service is deprecated. Please use .AddSecrets() WebApplicationBuilder extension methods instead.")]
 public class SecretManagerService : ISecretManager
 {
     private ISecretManager _secretManager;
