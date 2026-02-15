@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.GoogleCloudLogging;
 using Serilog.Events;
@@ -13,6 +14,8 @@ namespace Abhiram.Abstractions.Logging;
 /// </summary>
 public static class ConsoleGoogleSeriLogExtensions
 {
+    private static IHostEnvironment _hostEnvironment { get; set; } = default!;
+    
     /// <summary>
     /// Configures Serilog as the logging provider for the application, 
     /// writing logs both to the console and to Google Cloud Logging.
@@ -36,6 +39,8 @@ public static class ConsoleGoogleSeriLogExtensions
     /// </remarks>
     public static WebApplicationBuilder AddConsoleGoogleSeriLog(this WebApplicationBuilder builder, string? template = null)
     {
+        _hostEnvironment = builder.Environment;
+        
         string outputTemplate = template ?? "[{Timestamp:HH:mm:ss} {Level:u3}] [TraceId: {trace_id}] {SourceContext} {Message:lj}{NewLine}{Exception}";
 
         if (outputTemplate == "")
@@ -60,14 +65,13 @@ public static class ConsoleGoogleSeriLogExtensions
 
     private static LoggerConfiguration SetConsoleOrGoogleProjectId(LoggerConfiguration configuration, string outputTemplate)
     {
-        string? environment = Environment.GetEnvironmentVariable("ENV");
-        bool isProduction = environment != "Development" && environment != "Test";
+        bool isGoogleCloudEnvironment = _hostEnvironment.IsEnvironment("GoogleCloud");
 
-        if (isProduction)
+        if (isGoogleCloudEnvironment)
         {
             string? googleProjectId = Environment.GetEnvironmentVariable("GOOGLE_CLOUD_PROJECT_ID");
 
-            if (googleProjectId is null)
+            if (string.IsNullOrEmpty(googleProjectId))
             {
                 throw new ArgumentException($"The provided Google Project Id ({googleProjectId}) cannot be null or empty.");
             }

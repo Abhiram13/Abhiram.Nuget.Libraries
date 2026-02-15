@@ -12,7 +12,7 @@
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>Abhiram.Abstractions.Logging</PackageId>
-        <Version>2.0.0</Version>
+        <Version>2.1.0</Version>
         <Authors>Abhiram</Authors>
         <Description>A lightweight logging abstraction using Serilog for Console and Google Cloud Logging. Optimized for ASP.NET Core and environment-based configuration.</Description>
         <RepositoryUrl>https://github.com/Abhiram13/Abhiram.Nuget.Libraries</RepositoryUrl>
