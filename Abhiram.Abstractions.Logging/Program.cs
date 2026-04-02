@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.GoogleCloudLogging;
@@ -21,14 +22,7 @@ public static class ConsoleGoogleSeriLogExtensions
     /// writing logs both to the console and to Google Cloud Logging.
     /// </summary>
     /// <param name="builder">The <see cref="WebApplicationBuilder"/> to configure logging for.</param>
-    /// <param name="template">
-    /// (Optional) A custom Serilog console output template string that defines how log messages are rendered.  
-    /// If not provided, a default template including timestamp, level, trace ID, source context, and message is used.  
-    /// </param>
     /// <returns>The same <see cref="WebApplicationBuilder"/> instance for chaining.</returns>
-    /// <exception cref="ArgumentException">
-    /// Thrown when the <c>GOOGLE_CLOUD_PROJECT_ID</c> environment variable is null or empty.
-    /// </exception>
     /// <remarks>
     /// This method sets up Serilog with:
     /// <list type="bullet">
@@ -37,52 +31,12 @@ public static class ConsoleGoogleSeriLogExtensions
     /// <item><description>Minimum log level: Information (Console), Information (GCP)</description></item>
     /// </list>
     /// </remarks>
-    public static WebApplicationBuilder AddConsoleGoogleSeriLog(this WebApplicationBuilder builder, string? template = null)
+    public static WebApplicationBuilder AddConsoleGoogleSeriLog(this WebApplicationBuilder builder)
     {
-        _hostEnvironment = builder.Environment;
+        Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).Enrich.FromLogContext().CreateLogger();
         
-        string outputTemplate = template ?? "[{Timestamp:HH:mm:ss} {Level:u3}] [TraceId: {trace_id}] {SourceContext} {Message:lj}{NewLine}{Exception}";
-
-        if (outputTemplate == "")
-        {
-            throw new ArgumentException("Invalid output template is provided. Template ({0})", outputTemplate);
-        }
-
-        LoggerConfiguration loggerConfig = new LoggerConfiguration()
-            .Enrich.FromLogContext()
-            .MinimumLevel.Information()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Error)
-            .MinimumLevel.Override("System", LogEventLevel.Error)
-            .Filter.ByExcluding(Matching.FromSource("BudgetTracker.Infrastructure.Security.ApiKeyHandler"));            
-
-        loggerConfig = SetConsoleOrGoogleProjectId(loggerConfig, outputTemplate);
-
-        Log.Logger = loggerConfig.CreateLogger();
         builder.Host.UseSerilog();
+        
         return builder;
-    }
-
-    private static LoggerConfiguration SetConsoleOrGoogleProjectId(LoggerConfiguration configuration, string outputTemplate)
-    {
-        bool isGoogleCloudEnvironment = _hostEnvironment.IsEnvironment("GoogleCloud");
-
-        if (isGoogleCloudEnvironment)
-        {
-            string? googleProjectId = Environment.GetEnvironmentVariable("GOOGLE_CLOUD_PROJECT_ID");
-
-            if (string.IsNullOrEmpty(googleProjectId))
-            {
-                throw new ArgumentException($"The provided Google Project Id ({googleProjectId}) cannot be null or empty.");
-            }
-
-            configuration.WriteTo.GoogleCloudLogging(projectId: googleProjectId).MinimumLevel.Information();
-        }
-        else
-        {
-            configuration.WriteTo.Console(outputTemplate: outputTemplate);
-        }
-
-        return configuration;
     }
 }
