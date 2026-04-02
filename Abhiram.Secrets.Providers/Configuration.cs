@@ -35,7 +35,7 @@ public static class Configuration
     /// If the environment is <c>GoogleCloud</c>, secrets are loaded using <c>AddGcpSecrets</c>.
     /// </item>
     /// <item>
-    /// If the environment is <c>Development</c>, secrets are loaded using <c>AddDotEnvSecrets</c>.
+    /// If the environment is <c>Development</c> or <c>Test</c>, secrets are loaded using <c>AddDotEnvSecrets</c>.
     /// </item>
     /// </list>
     /// This method enables environment-specific secret loading while keeping configuration setup centralized.
@@ -47,7 +47,7 @@ public static class Configuration
             builder.AddGcpSecrets(optional);
         }
 
-        if (environment.IsDevelopment())
+        if (environment.IsDevelopment() || environment.IsEnvironment("Test"))
         {
             builder.AddDotEnvSecrets(optional);
         }

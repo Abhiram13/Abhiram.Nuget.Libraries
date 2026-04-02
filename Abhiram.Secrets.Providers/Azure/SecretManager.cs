@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Abhiram.Secrets.Providers.Interface;
 using Abhiram.Secrets.Providers.Exceptions;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
@@ -8,10 +7,9 @@ using Azure.Security.KeyVault.Secrets;
 namespace Abhiram.Secrets.Providers.Azure;
 
 /// <summary>
-/// Provides an implementation of <see cref="ISecretManager"/> that retrieves secrets
 /// from an Azure Key Vault using the <see cref="SecretClient"/> class.
 /// </summary>
-public class AzureSecretManagerService : ISecretManager
+public class AzureSecretManagerService
 {
     private readonly Uri _keyVaultUri;
     private readonly SecretClient _secretClient;
